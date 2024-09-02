@@ -80,6 +80,9 @@ def updateClientInformation(client: DataFrame):
     for i, _ in client.iterrows():
         for key, information in clientInformation.items():
             # Data treatment
+            if information == "":
+                continue # Doesn't chenge it values
+
             if information.isdigit():
                 information = int(information)
             

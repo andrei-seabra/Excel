@@ -57,6 +57,7 @@ while option != "6":
         clean()
 
         print("    ---- Atualização de cliente ----\n")
+        print("    Para manter os dados aperte 'Enter'.\n")
 
         updateClientInformation(searchClient(input("    Cliente: ")))
     elif option == "5":
@@ -70,6 +71,8 @@ while option != "6":
 
         print("    Saindo e salvando...")
         sleep(2)
+
+        clean()
 
     else:
         clean()
