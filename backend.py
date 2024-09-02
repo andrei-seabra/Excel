@@ -12,6 +12,14 @@ file = read_excel(filePath, engine="openpyxl")
 
 # Methods
 
+def saveFile():
+    try:
+        file.to_excel(filePath, engine="openpyxl", index=False)
+    except Exception:
+        print("    Erro ao salvar o arquivo.")
+
+
+
 def searchClient(information: str):
     """
         Searchs a client by the given information (NOME, CPF, CRLV, CEP, E-MAIL, CELULAR).
@@ -27,7 +35,7 @@ def searchClient(information: str):
         if not file.loc[file[column] == information].empty:
             return file.loc[file[column] == information]
     
-    print("    Cliente não encontrado.")
+    print("\n    Cliente não encontrado.")
     sleep(2)
 
 
@@ -54,12 +62,9 @@ def addClient(clientInformation: dict):
     newClient = DataFrame([clientInformation])
     file = concat([file, newClient], ignore_index=True) # Adds the new client data to the file
 
-    # Saves the information of the new client
-    file.to_excel(filePath, index=False)
 
 
-
-def updateClientInformation(client: DataFrame, clientInformation: dict):
+def updateClientInformation(client: DataFrame):
     """
         Updates the given client informations.
     """
@@ -68,6 +73,8 @@ def updateClientInformation(client: DataFrame, clientInformation: dict):
     # Checks if the the given client it's on file
     if client is None or client.empty:
         return
+
+    clientInformation = getClientInformation()
 
     # Updates the information of the given client
     for i, _ in client.iterrows():
@@ -81,8 +88,6 @@ def updateClientInformation(client: DataFrame, clientInformation: dict):
 
     print("    Atualizando dados...")
     sleep(2)
-
-    file.to_excel(filePath, index=False)
 
 
 
@@ -105,5 +110,3 @@ def removeClient(client: DataFrame):
 
     print("    Removendo cliente...")
     sleep(2)
-
-    file.to_excel(filePath, index=False)

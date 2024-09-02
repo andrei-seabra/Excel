@@ -7,6 +7,9 @@ option = ""
 
 # Runs the program
 while option != "6":
+    # Updates the data frame
+    file = read_excel(filePath, engine="openpyxl")
+
     # Cleans the terminal
     clean()
 
@@ -55,12 +58,12 @@ while option != "6":
 
         print("    ---- Atualização de cliente ----\n")
 
-        updateClientInformation(searchClient(input("Cliente: ")), getClientInformation())
+        updateClientInformation(searchClient(input("    Cliente: ")))
     elif option == "5":
         clean()
         
         print("    ---- Remover cliente ----\n")
-        removeClient(searchClient(input("Cliente: ")))
+        removeClient(searchClient(input("    Cliente: ")))
 
     elif option == "6":
         clean()
@@ -74,5 +77,4 @@ while option != "6":
         print("    Opção inválida.")
         sleep(2)
 
-# Saves the excel file
-file.to_excel(filePath, index=False)
+    saveFile()
