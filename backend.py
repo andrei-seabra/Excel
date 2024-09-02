@@ -1,4 +1,7 @@
 # Library used in the project
+from time import sleep
+
+from frontend import *
 from pandas import *
 
 # References
@@ -13,6 +16,7 @@ def searchClient(information: str):
     """
         Searchs a client by the given information (NOME, CPF, CRLV, CEP, E-MAIL, CELULAR).
     """
+    global file
 
     # Data treatment
     if information.isdigit():
@@ -22,21 +26,19 @@ def searchClient(information: str):
     for column in list(file.keys()):
         if not file.loc[file[column] == information].empty:
             return file.loc[file[column] == information]
+    
+    print("    Cliente não encontrado.")
+    sleep(2)
 
 
 
 def getClientInformation():
-    # References
-    keys = ["NOME", "CPF", "CRLV"]
+    # Reference
     clientInformation = {}
 
     # Gets the data
-    clientInformation["NOME"] = input("    Nome: ")
-    clientInformation["CPF"] = input("    CPF: ")
-    clientInformation["CRLV"] = input("    CRLV: ")
-    clientInformation["CEP"] = input("    CEP: ")
-    clientInformation["E-MAIL"] = input("    E-MAIL: ")
-    clientInformation["CELULAR"] = input("    CELULAR: ")
+    for key in list(file.keys()):
+        clientInformation[key] = input(f"    {key}: ")
 
     return clientInformation
 
@@ -57,22 +59,18 @@ def addClient(clientInformation: dict):
 
 
 
-def updateClientInformation(client: str, clientInformation: dict):
+def updateClientInformation(client: DataFrame, clientInformation: dict):
     """
         Updates the given client informations.
     """
     global file
 
-    # Reference
-    row = file[file["NOME"] == client]
-
     # Checks if the the given client it's on file
-    if row.empty:
-        print("    Cliente não encontrado.")
+    if client is None or client.empty:
         return
 
     # Updates the information of the given client
-    for i, _ in row.iterrows():
+    for i, _ in client.iterrows():
         for key, information in clientInformation.items():
             # Data treatment
             if information.isdigit():
@@ -81,22 +79,31 @@ def updateClientInformation(client: str, clientInformation: dict):
             # Updates the information
             file.at[i, key] = information
 
+    print("    Atualizando dados...")
+    sleep(2)
+
     file.to_excel(filePath, index=False)
 
 
 
-def removeClient(client: str):
+def removeClient(client: DataFrame):
     """
         Removes the given client of the file.
     """
     global file
 
     # Reference
-    row = file[file["NOME"] == client]
 
     # Checks if the the given client it's on file
-    if row.empty:
+    if client is None or client.empty:
         return
     
     # Removes the client
-    file = file[file["NOME"] != client]
+    file = file[file["NOME"] != client["NOME"].values[0]]
+
+    clean()
+
+    print("    Removendo cliente...")
+    sleep(2)
+
+    file.to_excel(filePath, index=False)

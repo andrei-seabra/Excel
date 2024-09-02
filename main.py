@@ -55,31 +55,18 @@ while option != "6":
 
         print("    ---- Atualização de cliente ----\n")
 
-        updateClientInformation(input("    Cliente (nome): "), getClientInformation())
-
-        clean()
-
-        print("    Atualizando dados...")
-        sleep(2)
-
+        updateClientInformation(searchClient(input("Cliente: ")), getClientInformation())
     elif option == "5":
         clean()
         
         print("    ---- Remover cliente ----\n")
-
-        removeClient(input("    Cliente (nome): "))
-
-        clean()
-
-        print("    Removendo cliente...")
-        sleep(2)
+        removeClient(searchClient(input("Cliente: ")))
 
     elif option == "6":
         clean()
 
         print("    Saindo e salvando...")
         sleep(2)
-        clean()
 
     else:
         clean()
